@@ -120,7 +120,7 @@ class GamepadServer {
           - space
           
           Analog Events (value must be number between -1 and 1):
-          - Sticks: leftX, leftY, rightX, rightY
+          - Axes: leftX, leftY, rightX, rightY
           - Triggers: leftTrigger, rightTrigger`,
           inputSchema: {
             type: "object",
@@ -135,15 +135,15 @@ class GamepadServer {
                       type: "string",
                       enum: ["button", "axis", "trigger", "mouseButton", "keyboard"],
                       description: `Event type:
-                      - "button": Gamepad buttons (A, B, X, Y, etc.)
-                      - "axis": Analog sticks (leftX, leftY, rightX, rightY)
+                      - "button": Standard gamepad buttons (A, B, X, Y, etc.)
+                      - "axis": Analog stick axes (leftX, leftY, rightX, rightY)
                       - "trigger": Analog triggers (leftTrigger, rightTrigger)
                       - "mouseButton": Mouse buttons (leftClick, rightClick, middleClick)
-                      - "keyboard": Keyboard keys (space)`
+                      - "keyboard": Keyboard keys (only space)`
                     },
                     code: { 
                       type: "string",
-                      description: "Event code (e.g., 'A' for A button, 'leftX' for left stick X axis)"
+                      description: "Event code matching one of the supported inputs"
                     },
                     value: {
                       type: ["boolean", "number"],
@@ -177,11 +177,11 @@ class GamepadServer {
               }
             },
             {
-              name: "Multiple button combination",
+              name: "Press shoulder buttons",
               parameters: {
                 events: [
                   { type: "button", code: "LEFT_SHOULDER", value: true },
-                  { type: "button", code: "A", value: true }
+                  { type: "button", code: "RIGHT_SHOULDER", value: true }
                 ]
               }
             },
