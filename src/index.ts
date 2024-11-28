@@ -104,7 +104,24 @@ class GamepadServer {
       tools: [
         {
           name: "send_gamepad_event",
-          description: `Send gamepad events to control the game...`, // Full description here
+          description: `Send gamepad events to control the game. Supported events:
+          
+          Button Events (value must be boolean):
+          - Standard buttons: A, B, X, Y
+          - Shoulder buttons: LEFT_SHOULDER (LB), RIGHT_SHOULDER (RB)
+          - Thumb buttons: LEFT_THUMB (L3), RIGHT_THUMB (R3)
+          - Special buttons: BACK, START, GUIDE
+          - D-pad: DPAD_UP, DPAD_DOWN, DPAD_LEFT, DPAD_RIGHT
+          
+          Mouse Events (value must be boolean):
+          - leftClick, rightClick, middleClick
+          
+          Keyboard Events (value must be boolean):
+          - space
+          
+          Analog Events (value must be number between -1 and 1):
+          - Sticks: leftX, leftY, rightX, rightY
+          - Triggers: leftTrigger, rightTrigger`,
           inputSchema: {
             type: "object",
             properties: {
@@ -116,10 +133,24 @@ class GamepadServer {
                   properties: {
                     type: {
                       type: "string",
-                      enum: ["button", "axis", "trigger", "mouseButton", "keyboard"]
+                      enum: ["button", "axis", "trigger", "mouseButton", "keyboard"],
+                      description: `Event type:
+                      - "button": Gamepad buttons (A, B, X, Y, etc.)
+                      - "axis": Analog sticks (leftX, leftY, rightX, rightY)
+                      - "trigger": Analog triggers (leftTrigger, rightTrigger)
+                      - "mouseButton": Mouse buttons (leftClick, rightClick, middleClick)
+                      - "keyboard": Keyboard keys (space)`
                     },
-                    code: { type: "string" },
-                    value: { type: ["boolean", "number"] }
+                    code: { 
+                      type: "string",
+                      description: "Event code (e.g., 'A' for A button, 'leftX' for left stick X axis)"
+                    },
+                    value: {
+                      type: ["boolean", "number"],
+                      description: `Event value:
+                      - For buttons/mouse/keyboard: boolean (true for press, false for release)
+                      - For axes/triggers: number between -1 and 1`
+                    }
                   },
                   required: ["type", "code", "value"]
                 }
@@ -127,7 +158,50 @@ class GamepadServer {
             },
             required: ["events"]
           },
-          examples: [/* Examples here */]
+          examples: [
+            {
+              name: "Press A button",
+              parameters: {
+                events: [
+                  { type: "button", code: "A", value: true }
+                ]
+              }
+            },
+            {
+              name: "Move left stick",
+              parameters: {
+                events: [
+                  { type: "axis", code: "leftX", value: 0.5 },
+                  { type: "axis", code: "leftY", value: -0.5 }
+                ]
+              }
+            },
+            {
+              name: "Multiple button combination",
+              parameters: {
+                events: [
+                  { type: "button", code: "LEFT_SHOULDER", value: true },
+                  { type: "button", code: "A", value: true }
+                ]
+              }
+            },
+            {
+              name: "Mouse click",
+              parameters: {
+                events: [
+                  { type: "mouseButton", code: "leftClick", value: true }
+                ]
+              }
+            },
+            {
+              name: "Press space",
+              parameters: {
+                events: [
+                  { type: "keyboard", code: "space", value: true }
+                ]
+              }
+            }
+          ]
         }
       ]
     };
