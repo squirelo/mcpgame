@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "gamepad": {
+      "command": "C:/Program Files/nodejs/node.exe",
+      "args": ["C:/Users/squir/Documents/Github/mcpgame/build/index.js"]
+    }
+  }
+} 
