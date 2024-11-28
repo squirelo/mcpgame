@@ -15,4 +15,39 @@ This server implements the [Model Context Protocol](https://modelcontextprotocol
 
 ## Installation
 
-1. Clone this repository: 
+1. Clone this repository:
+   ```bash
+   git clone https://github.com/yourusername/gamepad-mcp-server.git
+   cd gamepad-mcp-server
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Build the project:
+   ```bash
+   npm run build
+   ```
+
+4. Configure Claude Desktop by adding the following to your config file:
+   ```json
+   {
+     "servers": [
+       {
+         "name": "gamepad-server",
+         "command": "node /absolute/path/to/gamepad-mcp-server/build/index.js"
+       }
+     ]
+   }
+   ```
+
+5. Make the server executable:
+   ```bash
+   chmod +x build/index.js
+   ```
+
+## Event Format
+
+Events are sent as JSON objects with the following structure:
